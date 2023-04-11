@@ -1,5 +1,6 @@
 package Ecommerce.server;
 
+import Ecommerce.services.AuthenticationService;
 import Ecommerce.services.ProductService;
 
 import java.net.ServerSocket;
@@ -19,9 +20,7 @@ public class Server
 
                 System.out.println("Connected user: "+socket.getRemoteSocketAddress());
 
-                ProductService productService = new ProductService();
-
-                new CustomerHandler(socket, productService).start();
+                new CustomerHandler(socket, new ProductService(), new AuthenticationService()).start();
             }
         }
         catch (Exception exception)

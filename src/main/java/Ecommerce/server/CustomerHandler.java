@@ -1,9 +1,11 @@
 package Ecommerce.server;
 
+import Ecommerce.Utility.Utility;
 import Ecommerce.constant.StringConstant;
+import Ecommerce.model.Customer;
+import Ecommerce.services.AuthenticationService;
 import Ecommerce.services.ProductService;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -16,11 +18,15 @@ public class CustomerHandler extends Thread
 
     private ProductService productService;
 
-    public CustomerHandler(Socket socket, ProductService productService)
+    private AuthenticationService authenticationService;
+
+    public CustomerHandler(Socket socket, ProductService productService, AuthenticationService authenticationService)
     {
         this.socket = socket;
 
         this.productService = productService;
+
+        this.authenticationService = authenticationService;
     }
 
     @Override
@@ -35,6 +41,20 @@ public class CustomerHandler extends Thread
 
             switch (request.getString("Operation"))
             {
+                case "create account" ->
+                {
+                    var response = authenticationService.createAccount(new Customer(Utility.incrementAndGet(),
+                            request.get("Name").toString(),
+                            request.get("Password").toString()));
+
+                    printWriter.println(response);
+                }
+                case "login" ->
+                {
+                    var response = authenticationService.login(Integer.parseInt(request.get(StringConstant.CUSTOMER_ID.getConstant().toString()).toString()), request.get(StringConstant.PASSWORD.getConstant().toString()).toString());
+
+                    printWriter.println(response);
+                }
                 case "show all product" ->
                 {
                     var response = productService.getAllProduct();

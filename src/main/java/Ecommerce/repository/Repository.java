@@ -2,7 +2,7 @@ package Ecommerce.repository;
 
 public interface Repository
 {
-    public boolean insert();
+    public void insert(Object object);
 
     public boolean update();
 

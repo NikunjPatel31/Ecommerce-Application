@@ -18,6 +18,14 @@ public enum StringConstant
 
     PRODUCT_QUANTITY("Product quantity"),
 
+    CUSTOMER_ID("CustomerID"),
+
+    PASSWORD("Password"),
+
+    OPERATION_LOGIN("login"),
+
+    LOGIN_SUCCESSFUL("Login successful"),
+
     PORT(6001);
 
     private final Object constant;

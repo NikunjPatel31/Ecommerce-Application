@@ -60,9 +60,9 @@ public class ProductRepo implements Repository
     }
 
     @Override
-    public boolean insert()
+    public void insert(Object object)
     {
-        return false;
+
     }
 
     @Override
