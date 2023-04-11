@@ -3,6 +3,7 @@ package Ecommerce.services;
 import Ecommerce.constant.StringConstant;
 import Ecommerce.model.Product;
 import Ecommerce.repository.ProductRepo;
+import Ecommerce.repository.TransactionRepo;
 import org.json.JSONObject;
 
 public class ProductService
@@ -20,13 +21,15 @@ public class ProductService
         return response;
     }
 
-    public JSONObject buyProduct(int productID, int quantity)
+    public JSONObject buyProduct(int productID, int quantity, int customerID)
     {
         if (ProductRepo.getInstance().isProductExists(productID))
         {
             if (ProductRepo.getInstance().quantityEquals(productID,quantity))
             {
                 ProductRepo.getInstance().buyProduct(productID, quantity);
+
+                TransactionRepo.getInstance().insert(customerID, (Product) ProductRepo.getInstance().select(productID), quantity);
 
                 var response = new JSONObject();
 

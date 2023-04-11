@@ -13,9 +13,10 @@ import java.util.regex.Pattern;
 
 public class MenuController
 {
+    static int customerID = -1;
     public static boolean authentication(BufferedReader reader)
     {
-        try (Socket socket = new Socket("localhost", (Integer) StringConstant.PORT.getConstant());
+        try (Socket socket = new Socket("localhost", Integer.parseInt(StringConstant.PORT.getConstant().toString()));
             BufferedReader serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true))
         {
@@ -63,7 +64,13 @@ public class MenuController
 
                     System.out.println(response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString()));
 
-                    return response.get(StringConstant.RESPONSE_STATUS.getConstant().toString()).toString().equals(StringConstant.RESPONSE_STATUS_OK.getConstant().toString());
+                    if (response.get(StringConstant.RESPONSE_STATUS.getConstant().toString()).toString().equals(StringConstant.RESPONSE_STATUS_OK.getConstant().toString()))
+                    {
+                        customerID = Integer.parseInt(response.get(StringConstant.CUSTOMER_ID.getConstant().toString()).toString());
+
+                        return true;
+                    }
+                    return false;
                 }
                 case "2" ->
                 {
@@ -100,12 +107,16 @@ public class MenuController
 
                     System.out.println(StringConstant.CUSTOMER_ID.getConstant()+": "+response.get(StringConstant.CUSTOMER_ID.getConstant().toString()));
 
-                    return response.get(StringConstant.RESPONSE_STATUS.getConstant().toString()).toString().equals(StringConstant.RESPONSE_STATUS_OK.getConstant().toString());
+                    if (response.get(StringConstant.RESPONSE_STATUS.getConstant().toString()).toString().equals(StringConstant.RESPONSE_STATUS_OK.getConstant().toString()))
+                    {
+                        customerID = Integer.parseInt(response.get(StringConstant.CUSTOMER_ID.getConstant().toString()).toString());
+
+                        return true;
+                    }
+                    return false;
                 }
                 default ->
-                {
-                    System.out.println("Invalid choice");
-                }
+                        System.out.println("Invalid choice");
             }
         }
         catch (Exception exception)
@@ -117,7 +128,7 @@ public class MenuController
     }
     public static void getAllProduct()
     {
-        try (Socket socket = new Socket("localhost", (Integer) StringConstant.PORT.getConstant());
+        try (Socket socket = new Socket("localhost", Integer.parseInt(StringConstant.PORT.getConstant().toString()));
              var serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              var printWriter = new PrintWriter(socket.getOutputStream(), true))
         {
@@ -148,7 +159,7 @@ public class MenuController
     }
     public static void buyProduct(BufferedReader reader)
     {
-        try (var socket = new Socket("localhost", (Integer) StringConstant.PORT.getConstant());
+        try (var socket = new Socket("localhost", Integer.parseInt(StringConstant.PORT.getConstant().toString()));
              var serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              var printWriter = new PrintWriter(socket.getOutputStream(), true))
         {
@@ -167,6 +178,8 @@ public class MenuController
             request.put(StringConstant.PRODUCT_ID.getConstant().toString(), choice);
 
             request.put(StringConstant.PRODUCT_QUANTITY.getConstant().toString(), quantity);
+
+            request.put(StringConstant.CUSTOMER_ID.getConstant().toString(), customerID);
 
             printWriter.println(request);
 

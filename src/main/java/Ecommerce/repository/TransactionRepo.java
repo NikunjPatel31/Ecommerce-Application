@@ -26,18 +26,18 @@ public class TransactionRepo implements Repository
     @Override
     public void insert(Object object)
     {
-        transaction.computeIfAbsent(((Customer) object).getCustomerID(), k -> new ArrayList<>());
+        transaction.computeIfAbsent(((Integer) object), k -> new ArrayList<>());
     }
 
-    public void insert(Customer customer, Product product, int quantity)
+    public void insert(Integer customerID, Product product, int quantity)
     {
-        insert(customer);
+        insert(customerID);
 
-        var list = transaction.get(customer.getCustomerID());
+        var list = transaction.get(customerID);
 
         list.add(new Transaction(product.getPrice(), quantity, product.getProductName()));
 
-        transaction.put(customer.getCustomerID(), list);
+        transaction.put(customerID, list);
     }
 
     @Override

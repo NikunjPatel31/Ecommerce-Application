@@ -36,13 +36,9 @@ public class Client
                             MenuController.buyProduct(reader);
                         }
                         case "2" ->
-                        {
-                            isLoggedIn = false;
-                        }
+                                isLoggedIn = false;
                         default ->
-                        {
-                            System.out.println("Invalid choice");
-                        }
+                                System.out.println("Invalid choice");
                     }
                 }
             }

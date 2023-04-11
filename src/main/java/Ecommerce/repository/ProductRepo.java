@@ -47,16 +47,7 @@ public class ProductRepo implements Repository
 
     public synchronized void buyProduct(int productID, int quantity)
     {
-        System.out.println("Before buy");
         update(productID, quantity);
-        try
-        {
-            Thread.sleep(15000);
-        } catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
-        }
-        System.out.println("After buy");
     }
 
     @Override

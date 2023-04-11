@@ -13,12 +13,11 @@ import java.net.Socket;
 
 public class CustomerHandler extends Thread
 {
-
     private final Socket socket;
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
 
     public CustomerHandler(Socket socket, ProductService productService, AuthenticationService authenticationService)
     {
@@ -64,13 +63,12 @@ public class CustomerHandler extends Thread
                 case "buy product" ->
                 {
                     var response = productService.buyProduct(Integer.parseInt(request.get(StringConstant.PRODUCT_ID.getConstant().toString()).toString()),
-                            Integer.parseInt(request.get(StringConstant.PRODUCT_QUANTITY.getConstant().toString()).toString()));
+                            Integer.parseInt(request.get(StringConstant.PRODUCT_QUANTITY.getConstant().toString()).toString()),
+                            Integer.parseInt(request.get(StringConstant.CUSTOMER_ID.getConstant().toString()).toString()));
 
                     printWriter.println(response);
                 }
-                default ->
-                {
-                }
+                default -> System.out.println("Invalid choice");
             }
         }
         catch (Exception exception)
