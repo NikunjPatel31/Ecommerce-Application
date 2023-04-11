@@ -1,7 +1,6 @@
 package Ecommerce;
 
-import java.net.ServerSocket;
-import java.net.Socket;
+import Ecommerce.server.Server;
 
 public class BootstrapServer
 {

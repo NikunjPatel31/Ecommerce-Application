@@ -1,4 +1,4 @@
-package Ecommerce;
+package Ecommerce.server;
 
 import Ecommerce.constant.StringConstant;
 import Ecommerce.services.ProductService;
@@ -11,11 +11,16 @@ import java.net.Socket;
 
 public class CustomerHandler extends Thread
 {
-    private Socket socket;
 
-    public CustomerHandler(Socket socket)
+    private final Socket socket;
+
+    private ProductService productService;
+
+    public CustomerHandler(Socket socket, ProductService productService)
     {
         this.socket = socket;
+
+        this.productService = productService;
     }
 
     @Override
@@ -27,18 +32,19 @@ public class CustomerHandler extends Thread
 
             JSONObject request = new JSONObject(reader.readLine());
 
-            switch (request.get("Operation").toString())
+
+            switch (request.getString("Operation"))
             {
                 case "show all product" ->
                 {
-                    var response = new ProductService().getAllProduct();
+                    var response = productService.getAllProduct();
 
                     printWriter.println(response);
                 }
                 case "buy product" ->
                 {
-                    var response = new ProductService().buyProduct(Integer.parseInt(request.get(StringConstant.PRODUCT_ID.constant).toString()),
-                            Integer.parseInt(request.get(StringConstant.PRODUCT_QUANTITY.constant).toString()));
+                    var response = productService.buyProduct(Integer.parseInt(request.get(StringConstant.PRODUCT_ID.getConstant().toString()).toString()),
+                            Integer.parseInt(request.get(StringConstant.PRODUCT_QUANTITY.getConstant().toString()).toString()));
 
                     printWriter.println(response);
                 }

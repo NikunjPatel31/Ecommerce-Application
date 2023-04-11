@@ -16,12 +16,19 @@ public enum StringConstant
 
     RESPONSE_MESSAGE("Message"),
 
-    PRODUCT_QUANTITY("Product quantity");
+    PRODUCT_QUANTITY("Product quantity"),
 
-    public final String constant;
+    PORT(6001);
 
-    private StringConstant(String constant)
+    private final Object constant;
+
+    StringConstant(Object constant)
     {
         this.constant = constant;
+    }
+
+    public Object getConstant()
+    {
+        return constant;
     }
 }

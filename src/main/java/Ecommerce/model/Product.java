@@ -10,7 +10,9 @@ public class Product
 
     float price;
 
-    public Product() {}
+    public Product()
+    {
+    }
 
     public Product(String productName, int productID, int quantity, float price)
     {

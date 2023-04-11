@@ -6,5 +6,5 @@ public interface Repository
 
     public boolean update();
 
-    public <E> E select();
+    public Object select();
 }

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class ProductRepo implements Repository
 {
-    private Map<Integer, Product> productMap = new HashMap<>();
+    private final Map<Integer, Product> productMap = new HashMap<>();
 
     private static ProductRepo instance;
 
@@ -30,7 +30,7 @@ public class ProductRepo implements Repository
 
     public List<Product> getAllProduct()
     {
-        return select();
+        return (List<Product>) select();
     }
 
     public boolean isProductExists(int productID)
@@ -40,14 +40,23 @@ public class ProductRepo implements Repository
 
     public boolean quantityEquals(int productID,int quantity)
     {
-        Product product = select(productID);
+        Product product = (Product) select(productID);
 
         return product.getQuantity() > quantity;
     }
 
-    public void buyProduct(int productID, int quantity)
+    public synchronized void buyProduct(int productID, int quantity)
     {
+        System.out.println("Before buy");
         update(productID, quantity);
+        try
+        {
+            Thread.sleep(15000);
+        } catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+        System.out.println("After buy");
     }
 
     @Override
@@ -62,22 +71,20 @@ public class ProductRepo implements Repository
         return false;
     }
 
-    public boolean update(int productID, int quantity)
+    public void update(int productID, int quantity)
     {
         productMap.get(productID).setQuantity(productMap.get(productID).getQuantity() - quantity);
-        System.out.println("New value: "+productMap.get(productID).getQuantity());
-        return true;
     }
 
     @Override
-    public <E> E select()
+    public Object select()
     {
         //productMap.keySet().stream().map((key) -> productMap.get(key)).forEach((item) -> System.out.println(item.getProductName()));
-        return (E) productMap.keySet().stream().map((key) -> productMap.get(key)).collect(Collectors.toList());
+        return  productMap.keySet().stream().map(productMap::get).collect(Collectors.toList());
     }
 
-    public <E> E select(int productID)
+    public Object select(int productID)
     {
-        return (E) productMap.get(productID);
+        return productMap.get(productID);
     }
 }

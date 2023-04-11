@@ -29,25 +29,27 @@ public class ProductService
 
                 var response = new JSONObject();
 
-                response.put(StringConstant.RESPONSE_STATUS.constant, StringConstant.RESPONSE_STATUS_OK.constant);
+                response.put(StringConstant.RESPONSE_STATUS.getConstant().toString(), StringConstant.RESPONSE_STATUS_OK.getConstant().toString());
 
-                response.put(StringConstant.RESPONSE_MESSAGE.constant, "Product bought");
+                response.put(StringConstant.RESPONSE_MESSAGE.getConstant().toString(), "Product bought");
 
                 return response;
             }
             // quantity does not exists...
             var response = new JSONObject();
 
-            response.put(StringConstant.RESPONSE_STATUS.constant, StringConstant.RESPONSE_STATUS_ERROR.constant);
+            response.put(StringConstant.RESPONSE_STATUS.getConstant().toString(), StringConstant.RESPONSE_STATUS_ERROR.getConstant().toString());
 
-            response.put(StringConstant.RESPONSE_MESSAGE.constant, "Quantity is more than available");
+            response.put(StringConstant.RESPONSE_MESSAGE.getConstant().toString(), "Quantity is more than available");
+
+            return response;
         }
         // product does not exists
         var response = new JSONObject();
 
-        response.put(StringConstant.RESPONSE_STATUS.constant, StringConstant.RESPONSE_STATUS_ERROR.constant);
+        response.put(StringConstant.RESPONSE_STATUS.getConstant().toString(), StringConstant.RESPONSE_STATUS_ERROR.getConstant().toString());
 
-        response.put(StringConstant.RESPONSE_MESSAGE.constant, "Product is not available");
+        response.put(StringConstant.RESPONSE_MESSAGE.getConstant().toString(), "Product is not available");
 
         return response;
     }

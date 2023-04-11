@@ -1,6 +1,6 @@
 package Ecommerce.controller;
 
-import Ecommerce.constant.IntegerConstant;
+import Ecommerce.constant.StringConstant;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +14,7 @@ public class MenuController
 {
     public static void getAllProduct()
     {
-        try (Socket socket = new Socket("localhost", IntegerConstant.PORT.constant);
+        try (Socket socket = new Socket("localhost", (Integer) StringConstant.PORT.getConstant());
              var serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              var printWriter = new PrintWriter(socket.getOutputStream(), true))
         {
@@ -26,9 +26,9 @@ public class MenuController
 
             var response = new JSONObject(serverReader.readLine());
 
-            var jsonArray = (JSONArray) response.get("Product List");
+            var productList = (JSONArray) response.get("Product List");
 
-            for (Object o : jsonArray)
+            for (Object o : productList)
             {
                 var object = new JSONObject(o.toString());
 
@@ -37,7 +37,44 @@ public class MenuController
                         object.get("quantity") + ", " +
                         object.get("price"));
             }
-        } catch (IOException exception)
+        }
+        catch (IOException exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void buyProduct(BufferedReader reader)
+    {
+        try (var socket = new Socket("localhost", (Integer) StringConstant.PORT.getConstant());
+             var serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             var printWriter = new PrintWriter(socket.getOutputStream(), true);)
+        {
+            System.out.print("Enter productID to buy: ");
+
+            var choice = reader.readLine();
+
+            System.out.print("Enter quantity: ");
+
+            var quantity = reader.readLine();
+
+            var request = new JSONObject();
+
+            request.put(StringConstant.OPERATION.getConstant().toString(), "buy product");
+
+            request.put(StringConstant.PRODUCT_ID.getConstant().toString(), choice);
+
+            request.put(StringConstant.PRODUCT_QUANTITY.getConstant().toString(), quantity);
+
+            printWriter.println(request);
+
+            var responseString = serverReader.readLine();
+
+            var response = new JSONObject(responseString);
+
+            System.out.println(response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString()));
+        }
+        catch (Exception exception)
         {
             exception.printStackTrace();
         }
