@@ -26,6 +26,16 @@ public enum StringConstant
 
     LOGIN_SUCCESSFUL("Login successful"),
 
+    LOCALHOST("localhost"),
+
+    SHOW_ALL_PRODUCT("show all product"),
+
+    ASTERISK_SEQ("*************************************************"),
+
+    UNDERSCORE_SEQ( "-------------------------------------------------"),
+
+    NEW_LINE_CHARACTER("\n"),
+
     PORT(6001);
 
     private final Object constant;

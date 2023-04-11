@@ -1,6 +1,6 @@
 package Ecommerce.client;
 
-import Ecommerce.controller.MenuController;
+import Ecommerce.controller.ClientMenuController;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,7 +17,7 @@ public class Client
             {
                 if (!isLoggedIn)
                 {
-                    isLoggedIn = MenuController.authentication(reader);
+                    isLoggedIn = ClientMenuController.authentication(reader);
                 }
                 else
                 {
@@ -25,15 +25,17 @@ public class Client
 
                     System.out.println("2. Exit");
 
+                    System.out.print("Choice: ");
+
                     var choice = reader.readLine();
 
                     switch (choice)
                     {
                         case "1" ->
                         {
-                            MenuController.getAllProduct();
+                            ClientMenuController.getAllProduct();
 
-                            MenuController.buyProduct(reader);
+                            ClientMenuController.buyProduct(reader);
                         }
                         case "2" ->
                                 isLoggedIn = false;

@@ -33,23 +33,6 @@ public class ProductRepo implements Repository
         return (List<Product>) select();
     }
 
-    public boolean isProductExists(int productID)
-    {
-        return select(productID) != null;
-    }
-
-    public boolean quantityEquals(int productID,int quantity)
-    {
-        Product product = (Product) select(productID);
-
-        return product.getQuantity() > quantity;
-    }
-
-    public synchronized void buyProduct(int productID, int quantity)
-    {
-        update(productID, quantity);
-    }
-
     @Override
     public void insert(Object object)
     {

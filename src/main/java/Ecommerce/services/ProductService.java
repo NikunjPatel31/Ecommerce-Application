@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class ProductService
 {
-    public JSONObject getAllProduct()
+    public JSONObject showAllProduct()
     {
         var productRepo = ProductRepo.getInstance();
 
@@ -23,11 +23,11 @@ public class ProductService
 
     public JSONObject buyProduct(int productID, int quantity, int customerID)
     {
-        if (ProductRepo.getInstance().isProductExists(productID))
+        if (ProductRepo.getInstance().select(productID) != null)
         {
-            if (ProductRepo.getInstance().quantityEquals(productID,quantity))
+            if (((Product) (ProductRepo.getInstance().select(productID))).getQuantity() >= quantity)
             {
-                ProductRepo.getInstance().buyProduct(productID, quantity);
+                ProductRepo.getInstance().update(productID, quantity);
 
                 TransactionRepo.getInstance().insert(customerID, (Product) ProductRepo.getInstance().select(productID), quantity);
 

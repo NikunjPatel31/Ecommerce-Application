@@ -5,13 +5,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.regex.Pattern;
 
-public class MenuController
+public class ClientMenuController
 {
     static int customerID = -1;
     public static boolean authentication(BufferedReader reader)
@@ -62,7 +61,11 @@ public class MenuController
 
                     var response = new JSONObject(serverReader.readLine());
 
-                    System.out.println(response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString()));
+                    System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                            StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                            response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString())+
+                            StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                            StringConstant.UNDERSCORE_SEQ.getConstant());
 
                     if (response.get(StringConstant.RESPONSE_STATUS.getConstant().toString()).toString().equals(StringConstant.RESPONSE_STATUS_OK.getConstant().toString()))
                     {
@@ -103,9 +106,12 @@ public class MenuController
 
                     var response = new JSONObject(serverReader.readLine());
 
-                    System.out.println(response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString()));
+                    System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                            response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString()));
 
-                    System.out.println(StringConstant.CUSTOMER_ID.getConstant()+": "+response.get(StringConstant.CUSTOMER_ID.getConstant().toString()));
+                    System.out.println(StringConstant.CUSTOMER_ID.getConstant()+": "+response.get(StringConstant.CUSTOMER_ID.getConstant().toString())+
+                            StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                            StringConstant.UNDERSCORE_SEQ.getConstant());
 
                     if (response.get(StringConstant.RESPONSE_STATUS.getConstant().toString()).toString().equals(StringConstant.RESPONSE_STATUS_OK.getConstant().toString()))
                     {
@@ -134,7 +140,7 @@ public class MenuController
         {
             var request = new JSONObject();
 
-            request.put("Operation", "show all product");
+            request.put(StringConstant.OPERATION.getConstant().toString(), StringConstant.SHOW_ALL_PRODUCT.getConstant().toString());
 
             printWriter.println(request);
 
@@ -142,9 +148,11 @@ public class MenuController
 
             var productList = (JSONArray) response.get("Product List");
 
-            for (Object o : productList)
+            System.out.println("ID | Product Name | Quantity | Price");
+
+            for (Object product : productList)
             {
-                var object = new JSONObject(o.toString());
+                var object = new JSONObject(product.toString());
 
                 System.out.println(object.get("productID") + ", " +
                         object.get("productName") + ", " +
@@ -152,7 +160,7 @@ public class MenuController
                         object.get("price"));
             }
         }
-        catch (IOException exception)
+        catch (Exception exception)
         {
             exception.printStackTrace();
         }
@@ -187,7 +195,11 @@ public class MenuController
 
             var response = new JSONObject(responseString);
 
-            System.out.println(response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString()));
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString())+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
         }
         catch (Exception exception)
         {

@@ -56,7 +56,7 @@ public class CustomerHandler extends Thread
                 }
                 case "show all product" ->
                 {
-                    var response = productService.getAllProduct();
+                    var response = productService.showAllProduct();
 
                     printWriter.println(response);
                 }
