@@ -28,19 +28,14 @@ public class ProductRepo implements Repository
         return instance;
     }
 
-    public List<Product> getAllProduct()
+    @Override
+    public synchronized void insert(Object object)
     {
-        return (List<Product>) select();
+        productMap.computeIfAbsent(((Product) object).getProductID(), k -> ((Product) object));
     }
 
     @Override
-    public void insert(Object object)
-    {
-
-    }
-
-    @Override
-    public boolean update()
+    public boolean update(Object id, Object object)
     {
         return false;
     }
@@ -53,8 +48,7 @@ public class ProductRepo implements Repository
     @Override
     public Object select()
     {
-        //productMap.keySet().stream().map((key) -> productMap.get(key)).forEach((item) -> System.out.println(item.getProductName()));
-        return  productMap.keySet().stream().map(productMap::get).collect(Collectors.toList());
+        return productMap.keySet().stream().map(productMap::get).collect(Collectors.toList());
     }
 
     public Object select(int productID)

@@ -1,5 +1,6 @@
 package Ecommerce.controller;
 
+import Ecommerce.constant.ErrorConstant;
 import Ecommerce.constant.StringConstant;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -7,18 +8,22 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.regex.Pattern;
 
 public class ClientMenuController
 {
     static int customerID = -1;
-    public static boolean authentication(BufferedReader reader)
+    public static boolean authentication(BufferedReader reader) throws ConnectException
     {
-        try (Socket socket = new Socket("localhost", Integer.parseInt(StringConstant.PORT.getConstant().toString()));
+        try (Socket socket = new Socket(StringConstant.IP.getConstant().toString(), Integer.parseInt(StringConstant.PORT.getConstant().toString()));
             BufferedReader serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true))
         {
+            socket.setSoTimeout(Integer.parseInt(StringConstant.REQUEST_TIME_OUT.getConstant().toString()));
+
             System.out.println("1. Login");
 
             System.out.println("2. Create Account");
@@ -59,7 +64,14 @@ public class ClientMenuController
 
                     printWriter.println(request);
 
-                    var response = new JSONObject(serverReader.readLine());
+                    var serverResponse = serverReader.readLine();
+
+                    if (serverResponse == null)
+                    {
+                        throw new ConnectException();
+                    }
+
+                    var response = new JSONObject(serverResponse);
 
                     System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
                             StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
@@ -104,7 +116,14 @@ public class ClientMenuController
 
                     printWriter.println(request);
 
-                    var response = new JSONObject(serverReader.readLine());
+                    var serverResponse = serverReader.readLine();
+
+                    if (serverResponse == null)
+                    {
+                        throw new ConnectException();
+                    }
+
+                    var response = new JSONObject(serverResponse);
 
                     System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
                             response.get(StringConstant.RESPONSE_MESSAGE.getConstant().toString()));
@@ -125,26 +144,55 @@ public class ClientMenuController
                         System.out.println("Invalid choice");
             }
         }
+        catch (SocketTimeoutException socketTimeoutException)
+        {
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    ErrorConstant.RESPONSE_TIME_OUT.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
+        }
+        catch (ConnectException connectException)
+        {
+            // exception needs to get propogate because if we don't then program will
+            // go into infinite loop
+            throw connectException;
+        }
         catch (Exception exception)
         {
             exception.printStackTrace();
+
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    ErrorConstant.INTERNAL_ERROR.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
         }
 
         return false;
     }
-    public static void getAllProduct()
+    public static void getAllProduct() throws ConnectException
     {
-        try (Socket socket = new Socket("localhost", Integer.parseInt(StringConstant.PORT.getConstant().toString()));
+        try (Socket socket = new Socket(StringConstant.IP.getConstant().toString(), Integer.parseInt(StringConstant.PORT.getConstant().toString()));
              var serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              var printWriter = new PrintWriter(socket.getOutputStream(), true))
         {
+            socket.setSoTimeout(Integer.parseInt(StringConstant.REQUEST_TIME_OUT.getConstant().toString()));
+
             var request = new JSONObject();
 
             request.put(StringConstant.OPERATION.getConstant().toString(), StringConstant.SHOW_ALL_PRODUCT.getConstant().toString());
 
             printWriter.println(request);
 
-            var response = new JSONObject(serverReader.readLine());
+            var serverResponse = serverReader.readLine();
+
+            if (serverResponse == null)
+            {
+                throw new ConnectException();
+            }
+
+            var response = new JSONObject(serverResponse);
 
             var productList = (JSONArray) response.get("Product List");
 
@@ -154,46 +202,72 @@ public class ClientMenuController
             {
                 var object = new JSONObject(product.toString());
 
-                System.out.println(object.get("productID") + ", " +
-                        object.get("productName") + ", " +
-                        object.get("quantity") + ", " +
-                        object.get("price"));
+                System.out.println("ID: "+object.get("productID") + ", " +
+                        "Name: "+ object.get("productName") + ", " +
+                        "Quantity: "+ object.get("quantity") + ", " +
+                        "Price: "+ object.get("price"));
             }
+        }
+        catch (ConnectException connectException)
+        {
+            // exception needs to get propogate because if we don't then program will
+            // go into infinite loop
+            throw connectException;
         }
         catch (Exception exception)
         {
-            exception.printStackTrace();
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    ErrorConstant.INTERNAL_ERROR.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
         }
     }
-    public static void buyProduct(BufferedReader reader)
+    public static void buyProduct(BufferedReader reader) throws ConnectException
     {
-        try (var socket = new Socket("localhost", Integer.parseInt(StringConstant.PORT.getConstant().toString()));
+        try (var socket = new Socket(StringConstant.IP.getConstant().toString(), Integer.parseInt(StringConstant.PORT.getConstant().toString()));
              var serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              var printWriter = new PrintWriter(socket.getOutputStream(), true))
         {
-            System.out.print("Enter productID to buy: ");
-
-            var choice = reader.readLine();
-
-            System.out.print("Enter quantity: ");
-
-            var quantity = reader.readLine();
+            socket.setSoTimeout(Integer.parseInt(StringConstant.REQUEST_TIME_OUT.getConstant().toString()));
 
             var request = new JSONObject();
 
+            System.out.print("Enter productID to buy: ");
+
+            var value = "";
+            while ((value = reader.readLine()).isBlank()
+                    || !Pattern.matches("\\d+", value))
+            {
+                System.out.print("Enter valid productID: ");
+            }
+
+            request.put(StringConstant.PRODUCT_ID.getConstant().toString(), value);
+
+            System.out.print("Enter quantity: ");
+
+            while ((value = reader.readLine()).isBlank()
+                    || !Pattern.matches("\\d+", value))
+            {
+                System.out.print("Enter valid quantity: ");
+            }
+
             request.put(StringConstant.OPERATION.getConstant().toString(), "buy product");
 
-            request.put(StringConstant.PRODUCT_ID.getConstant().toString(), choice);
-
-            request.put(StringConstant.PRODUCT_QUANTITY.getConstant().toString(), quantity);
+            request.put(StringConstant.PRODUCT_QUANTITY.getConstant().toString(), value);
 
             request.put(StringConstant.CUSTOMER_ID.getConstant().toString(), customerID);
 
             printWriter.println(request);
 
-            var responseString = serverReader.readLine();
+            var serverResponse = serverReader.readLine();
 
-            var response = new JSONObject(responseString);
+            if (serverResponse == null)
+            {
+                throw new ConnectException();
+            }
+
+            var response = new JSONObject(serverResponse);
 
             System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
                     StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
@@ -201,9 +275,19 @@ public class ClientMenuController
                     StringConstant.NEW_LINE_CHARACTER.getConstant()+
                     StringConstant.UNDERSCORE_SEQ.getConstant());
         }
+        catch (ConnectException connectException)
+        {
+            // exception needs to get propogate because if we don't then program will
+            // go into infinite loop
+            throw connectException;
+        }
         catch (Exception exception)
         {
-            exception.printStackTrace();
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    ErrorConstant.INTERNAL_ERROR.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
         }
     }
 }

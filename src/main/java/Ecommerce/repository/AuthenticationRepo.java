@@ -28,7 +28,7 @@ public class AuthenticationRepo implements Repository
     }
 
     @Override
-    public boolean update()
+    public boolean update(Object id, Object object)
     {
         return false;
     }

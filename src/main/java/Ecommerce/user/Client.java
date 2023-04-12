@@ -1,9 +1,12 @@
-package Ecommerce.client;
+package Ecommerce.user;
 
+import Ecommerce.constant.ErrorConstant;
+import Ecommerce.constant.StringConstant;
 import Ecommerce.controller.ClientMenuController;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 
 public class Client
 {
@@ -44,11 +47,22 @@ public class Client
                     }
                 }
             }
-        } catch (Exception exception)
+        }
+        catch (ConnectException connectException)
         {
-            System.out.println("Internal error");
-
-            exception.printStackTrace();
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    ErrorConstant.SERVER_UNREACHABLE.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
+        }
+        catch (Exception exception)
+        {
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    ErrorConstant.INTERNAL_ERROR.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
         }
     }
 }

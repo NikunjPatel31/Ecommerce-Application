@@ -46,6 +46,8 @@ public class AuthenticationService
 
             response.put(StringConstant.RESPONSE_MESSAGE.getConstant().toString(), StringConstant.LOGIN_SUCCESSFUL.getConstant().toString());
 
+            response.put(StringConstant.CUSTOMER_ID.getConstant().toString(), customerID);
+
             return response;
         }
         response.put(StringConstant.RESPONSE_STATUS.getConstant().toString(), StringConstant.RESPONSE_STATUS_ERROR.getConstant().toString());

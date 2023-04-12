@@ -2,9 +2,9 @@ package Ecommerce.repository;
 
 public interface Repository
 {
-    public void insert(Object object);
+    void insert(Object object);
 
-    public boolean update();
+    boolean update(Object id, Object object);
 
-    public Object select();
+    Object select();
 }

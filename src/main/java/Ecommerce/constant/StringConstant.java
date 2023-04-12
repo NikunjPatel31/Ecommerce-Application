@@ -1,7 +1,5 @@
 package Ecommerce.constant;
 
-import Ecommerce.model.Product;
-
 public enum StringConstant
 {
     OPERATION("Operation"),
@@ -26,7 +24,7 @@ public enum StringConstant
 
     LOGIN_SUCCESSFUL("Login successful"),
 
-    LOCALHOST("localhost"),
+    IP("10.20.40.197"),
 
     SHOW_ALL_PRODUCT("show all product"),
 
@@ -35,6 +33,16 @@ public enum StringConstant
     UNDERSCORE_SEQ( "-------------------------------------------------"),
 
     NEW_LINE_CHARACTER("\n"),
+
+    PRODUCT_NAME("Product Name"),
+
+    MRP("mrp"),
+
+    QUANTITY("Quantity"),
+
+    ADD_NEW_PRODUCT("Add new product"),
+
+    REQUEST_TIME_OUT(5000),
 
     PORT(6001);
 

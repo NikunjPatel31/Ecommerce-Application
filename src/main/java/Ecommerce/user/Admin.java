@@ -1,4 +1,4 @@
-package Ecommerce.client;
+package Ecommerce.user;
 
 import Ecommerce.constant.ErrorConstant;
 import Ecommerce.constant.StringConstant;
@@ -13,27 +13,30 @@ public class Admin
     {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)))
         {
-            System.out.println("1. Show all product");
-
-            System.out.println("2. Add new product");
-
-            System.out.println("3. Show transaction");
-
-            System.out.print("4. Choice");
-
-            var choice = reader.readLine();
-
-            switch (choice)
+            while (true)
             {
-                case "1" ->
-                        AdminMenuController.showAllProduct();
-                case "2" ->
-                        AdminMenuController.addNewProduct(reader);
-                case "3" ->
-                {
+                System.out.println("1. Show all product");
 
+                System.out.println("2. Add new product");
+
+                System.out.println("3. Show transaction");
+
+                System.out.print("Choice: ");
+
+                var choice = reader.readLine();
+
+                switch (choice)
+                {
+                    case "1" ->
+                            AdminMenuController.showAllProduct();
+                    case "2" ->
+                            AdminMenuController.addNewProduct(reader);
+                    case "3" ->
+                    {
+
+                    }
+                    default -> System.out.println(ErrorConstant.INVALID_CHOICE.getConstant());
                 }
-                default -> System.out.println(ErrorConstant.INVALID_CHOICE.getConstant());
             }
         }
         catch (Exception exception)

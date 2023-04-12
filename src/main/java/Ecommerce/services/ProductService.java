@@ -12,7 +12,7 @@ public class ProductService
     {
         var productRepo = ProductRepo.getInstance();
 
-        var list = productRepo.getAllProduct();
+        var list = productRepo.select();
 
         var response = new JSONObject();
 
@@ -54,6 +54,21 @@ public class ProductService
         response.put(StringConstant.RESPONSE_STATUS.getConstant().toString(), StringConstant.RESPONSE_STATUS_ERROR.getConstant().toString());
 
         response.put(StringConstant.RESPONSE_MESSAGE.getConstant().toString(), "Product is not available");
+
+        return response;
+    }
+
+    public JSONObject addNewProduct(Product product)
+    {
+        ProductRepo.getInstance().insert(product);
+
+        var response = new JSONObject();
+
+        response.put(StringConstant.RESPONSE_STATUS.getConstant().toString(), StringConstant.RESPONSE_STATUS_OK.getConstant().toString());
+
+        response.put(StringConstant.RESPONSE_MESSAGE.getConstant().toString(), "Product added successful");
+
+        response.put(StringConstant.PRODUCT_ID.getConstant().toString(), product.getProductID());
 
         return response;
     }

@@ -1,6 +1,5 @@
 package Ecommerce.repository;
 
-import Ecommerce.model.Customer;
 import Ecommerce.model.Product;
 import Ecommerce.model.Transaction;
 
@@ -41,7 +40,7 @@ public class TransactionRepo implements Repository
     }
 
     @Override
-    public boolean update()
+    public boolean update(Object id, Object object)
     {
         return false;
     }
