@@ -13,6 +13,8 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.regex.Pattern;
 
+// i have used ClientMenuController to increase code readability
+// all the request to server and response from server will be shown here.
 public class ClientMenuController
 {
     static int customerID = -1;

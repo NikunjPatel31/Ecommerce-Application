@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
 
+// i have used AdminMenuController to increase code readability
+// all the request to server and response from server will be shown here.
 public class AdminMenuController
 {
     public static void showAllProduct() throws ConnectException
