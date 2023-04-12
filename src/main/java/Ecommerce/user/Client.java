@@ -14,6 +14,8 @@ public class Client
     {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)))
         {
+            // isLoggedIn flag is used because once user logs in we don't want to show them
+            // login and create account options hence we used flag to bypass.
             var isLoggedIn = false;
 
             while (true)
@@ -47,7 +49,7 @@ public class Client
                         case "3" ->
                                 isLoggedIn = false;
                         default ->
-                                System.out.println("Invalid choice");
+                                System.out.println(ErrorConstant.INVALID_CHOICE.getConstant().toString());
                     }
                 }
             }
