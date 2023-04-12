@@ -26,7 +26,9 @@ public class Client
                 {
                     System.out.println("1. Show Product");
 
-                    System.out.println("2. Exit");
+                    System.out.println("2. Show Transaction");
+
+                    System.out.println("3. Exit");
 
                     System.out.print("Choice: ");
 
@@ -41,6 +43,8 @@ public class Client
                             ClientMenuController.buyProduct(reader);
                         }
                         case "2" ->
+                                ClientMenuController.showTransaction();
+                        case "3" ->
                                 isLoggedIn = false;
                         default ->
                                 System.out.println("Invalid choice");

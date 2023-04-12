@@ -10,9 +10,7 @@ public class ProductService
 {
     public JSONObject showAllProduct()
     {
-        var productRepo = ProductRepo.getInstance();
-
-        var list = productRepo.select();
+        var list = ProductRepo.getInstance().select();
 
         var response = new JSONObject();
 

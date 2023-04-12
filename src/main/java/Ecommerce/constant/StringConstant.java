@@ -38,11 +38,25 @@ public enum StringConstant
 
     MRP("mrp"),
 
-    QUANTITY("Quantity"),
+    QUANTITY("quantity"),
 
     ADD_NEW_PRODUCT("Add new product"),
 
     REQUEST_TIME_OUT(5000),
+
+    SHOW_TRANSACTION("show transaction"),
+
+    TRANSACTION("Transaction"),
+
+    TOTAL_AMOUNT("totalAmount"),
+
+    PRODUCTNAME("productName"),
+
+    USER_TYPE("user type"),
+
+    ADMIN("Admin"),
+
+    CUSTOMER("Customer"),
 
     PORT(6001);
 

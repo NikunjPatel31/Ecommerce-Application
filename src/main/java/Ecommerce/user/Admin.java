@@ -32,9 +32,7 @@ public class Admin
                     case "2" ->
                             AdminMenuController.addNewProduct(reader);
                     case "3" ->
-                    {
-
-                    }
+                            AdminMenuController.showTransaction();
                     default -> System.out.println(ErrorConstant.INVALID_CHOICE.getConstant());
                 }
             }

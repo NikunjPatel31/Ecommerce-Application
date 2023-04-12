@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TransactionRepo implements Repository
 {
@@ -48,6 +49,11 @@ public class TransactionRepo implements Repository
     @Override
     public Object select()
     {
-        return null;
+        return transaction.values();
+    }
+
+    public Object select(int customerID)
+    {
+        return transaction.get(customerID);
     }
 }

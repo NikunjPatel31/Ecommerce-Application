@@ -290,4 +290,65 @@ public class ClientMenuController
                     StringConstant.UNDERSCORE_SEQ.getConstant());
         }
     }
+    public static void showTransaction() throws ConnectException
+    {
+        try (var socket = new Socket(StringConstant.IP.getConstant().toString(), Integer.parseInt(StringConstant.PORT.getConstant().toString()));
+             var serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             var printWriter = new PrintWriter(socket.getOutputStream(), true))
+        {
+            socket.setSoTimeout(Integer.parseInt(StringConstant.REQUEST_TIME_OUT.getConstant().toString()));
+
+            var request = new JSONObject();
+
+            request.put(StringConstant.OPERATION.getConstant().toString(), StringConstant.SHOW_TRANSACTION.getConstant().toString());
+
+            request.put(StringConstant.CUSTOMER_ID.getConstant().toString(), customerID);
+
+            request.put(StringConstant.USER_TYPE.getConstant().toString(), StringConstant.CUSTOMER.getConstant().toString());
+
+            printWriter.println(request);
+
+            var serverResponse = serverReader.readLine();
+
+            if (serverResponse == null)
+            {
+                throw new ConnectException();
+            }
+
+            var response = new JSONObject(serverResponse);
+
+            var list =  (JSONArray) response.get(StringConstant.TRANSACTION.getConstant().toString());
+
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant());
+
+            for (Object transaction : list)
+            {
+                var object = new JSONObject(transaction.toString());
+
+                System.out.println(StringConstant.PRODUCT_NAME.getConstant().toString()+": "+
+                        object.get(StringConstant.PRODUCTNAME.getConstant().toString()).toString()+", "+
+                        StringConstant.QUANTITY.getConstant().toString()+": "+
+                        object.get(StringConstant.QUANTITY.getConstant().toString()).toString()+", "+
+                        StringConstant.MRP.getConstant().toString()+": "+
+                        object.get(StringConstant.TOTAL_AMOUNT.getConstant().toString()).toString());
+            }
+
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant());
+        }
+        catch (ConnectException connectException)
+        {
+            // exception needs to get propogate because if we don't then program will
+            // go into infinite loop
+            throw connectException;
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+            System.out.println(StringConstant.UNDERSCORE_SEQ.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant().toString()+
+                    ErrorConstant.INTERNAL_ERROR.getConstant().toString()+
+                    StringConstant.NEW_LINE_CHARACTER.getConstant()+
+                    StringConstant.UNDERSCORE_SEQ.getConstant());
+        }
+    }
 }

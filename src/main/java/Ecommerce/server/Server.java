@@ -3,6 +3,7 @@ package Ecommerce.server;
 import Ecommerce.constant.ErrorConstant;
 import Ecommerce.services.AuthenticationService;
 import Ecommerce.services.ProductService;
+import Ecommerce.services.TransactionService;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,7 +24,7 @@ public class Server
 
                 ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-                executorService.execute(new CustomerHandler(socket, new ProductService(), new AuthenticationService()));
+                executorService.execute(new CustomerHandler(socket, new ProductService(), new AuthenticationService(), new TransactionService()));
             }
         }
         catch (Exception exception)
